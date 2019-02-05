@@ -1,0 +1,14 @@
+.AddNew-icon {
+  width: 45px;
+  height:45px;
+  background-repeat:no-repeat;
+  background-size: 100%;
+  background-image:url('../images/add.svg');
+  filter: drop-shadow(0 0 2px gray);
+  transition: transform 500ms ease-in-out;
+  margin: 0 auto;
+}
+
+.AddNew-icon:hover {
+  transform: scale(1.1); 
+}
