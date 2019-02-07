@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List } from '../components/List';
-//import { showDetails } from '../actions/ListActions';
+import { getTasksFromStorage, removeTask } from '../actions/ListActions';
 
 class ListContainer extends Component {
-	render() {
-		const { list /*, showDetails*/ } = this.props;
+	componentDidMount() {
+		this.props.getTasksFromStorage();
+	}
 
-		return <List tasks={list.tasks} />;
+	render() {
+		const { list, removeTask } = this.props;
+
+		let tasks = list.tasks;
+		if (!tasks) {
+			tasks = [];
+		}
+
+		return <List tasks={tasks} removeTask={removeTask} />;
 	}
 }
 const mapStateToProps = store => {
@@ -15,13 +24,17 @@ const mapStateToProps = store => {
 		list: store.list,
 	};
 };
-/*
+
 const mapDispatchToProps = dispatch => {
 	return {
-		showDetails: (objectId, objectType) =>
-			dispatch(showDetails(objectId, objectType)),
+		getTasksFromStorage: (objectId, objectType) =>
+			dispatch(getTasksFromStorage(objectId, objectType)),
+		removeTask: (objectId, objectType) =>
+			dispatch(removeTask(objectId, objectType)),
 	};
 };
-*/
-export default connect(mapStateToProps /*,
-	mapDispatchToProps*/)(ListContainer);
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ListContainer);

@@ -44,6 +44,7 @@ export class AddNew extends React.Component {
 
 	render() {
 		const { modalIsOpen } = this.state;
+		const { lastID } = this.props;
 
 		return (
 			<React.Fragment>
@@ -54,7 +55,12 @@ export class AddNew extends React.Component {
 					style={customStyles}
 					onRequestClose={this.closeModal}
 				>
-					<Add onClickClose={this.closeModal} onClickAdd={this.handleAddNew} />
+					<Add
+						onClickClose={this.closeModal}
+						onClickAdd={this.handleAddNew}
+						lastID={lastID}
+						currentID={0}
+					/>
 				</Modal>
 			</React.Fragment>
 		);
@@ -63,4 +69,5 @@ export class AddNew extends React.Component {
 
 AddNew.propTypes = {
 	handleAdd: PropTypes.func.isRequired,
+	lastID: PropTypes.number.isRequired,
 };

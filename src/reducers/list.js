@@ -1,33 +1,52 @@
 import { ADD_NEW_TASK, PUT_IN_STORAGE } from '../actions/AddNewActions';
-
-const initialState = {
-	tasks: [
+import {
+	GET_TASKS_SUCCESS,
+	STORAGE_REQUEST,
+	REMOVE_TASK,
+} from '../actions/ListActions';
+/*
+tasks: [
 		{
-			id: 0,
+			id: 0, - task id
 			title: 'Task1',
 			description: 'Task description',
-			date: '',
-			time: '',
-			close_date: '',
-			close_time: '',
-			done: false,
+			date: '', - deadline date
+			time: '', - deadline time
+			close_date: '', - actual date of closing task
+			close_time: '', - actual time of closing task
+			done: false, - if task is done
 		},
 	],
+*/
+
+const initialState = {
+	tasks: [],
 	isFetching: false,
 	isSaving: false,
 	error: '',
 	modalObjectId: '',
 	objectModal: {},
-	lastID: 0,
+	//	lastID: 0,
 };
 
 export function listReducer(state = initialState, action) {
+	let tasks = state.tasks;
 	switch (action.type) {
-		/*case GET_LIST_REQUEST:
-			return { ...state, cadastrString: action.payload, isFetching: true };
-		case GET_LIST_SUCCESS:
-			return { ...state, objects: action.payload, isFetching: false };
-		case GET_LIST_ERROR:
+		case STORAGE_REQUEST:
+			return { ...state, isFetching: true };
+		case GET_TASKS_SUCCESS:
+			return {
+				...state,
+				tasks: action.payload,
+				isFetching: false,
+			};
+		case REMOVE_TASK:
+			tasks = tasks.filter(item => item.id !== +action.payload);
+			return {
+				...state,
+				tasks: tasks,
+			};
+		/*case GET_LIST_ERROR:
 			return {
 				...state,
 				objects: [],
@@ -56,20 +75,11 @@ export function listReducer(state = initialState, action) {
 			};
 		case ADD_NEW_TASK:
 			let newTask = action.payload;
-			const id = newTask.id;
-			let tasks = state.tasks;
-			console.log('id=', id);
-			if (id !== undefined) {
-				tasks = tasks.filter(item => item.id !== id);
-			} else {
-				newTask.id = state.lastID + 1;
-			}
+
 			tasks.push(newTask);
 			return {
 				...state,
 				tasks: tasks,
-				isSaving: false,
-				lastID: newTask.id,
 			};
 		default:
 			return state;

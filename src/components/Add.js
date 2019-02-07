@@ -8,12 +8,14 @@ class Add extends React.Component {
 		this.state = {
 			title: '',
 			description: '',
-			datetime: '',
+			date: '',
+			time: '',
 			priority: 'Normal',
 			titleStatus: true,
 			descriptionStatus: true,
-			datetimeStatus: true,
-			//	timeStatus: true,
+			dateStatus: true,
+			timeStatus: true,
+			id: 0,
 		};
 	}
 
@@ -27,7 +29,9 @@ class Add extends React.Component {
 	addData = () => {
 		//validate data & call action');
 		let error = 0;
-		let { title, description, datetime, priority } = this.state;
+		let { title, description, date, time, priority } = this.state;
+		const { currentID, lastID } = this.props;
+
 		title = title.trim();
 		description = description.trim();
 
@@ -47,19 +51,30 @@ class Add extends React.Component {
 
 		if (error > 0) return false;
 
+		let id = 0;
+
+		if (currentID === 0) {
+			id = lastID + 1;
+		} else {
+			id = currentID;
+		}
 		//now call action
 		console.log(
-			'Tile, desc, datetime, priority = ',
+			'id, Tile, desc, date,time, priority = ',
+			id,
 			title,
 			description,
-			datetime,
+			date,
+			time,
 			priority
 		);
 		this.props.onClickAdd({
 			title: title,
 			description: description,
-			date: datetime,
+			date: date,
+			time: time,
 			priority: priority,
+			id: id,
 		});
 	};
 
@@ -88,9 +103,11 @@ class Add extends React.Component {
 		const {
 			title,
 			description,
-			datetime,
+			date,
+			time,
 			priority,
-			datetimeStatus,
+			dateStatus,
+			timeStatus,
 			titleStatus,
 			descriptionStatus,
 		} = this.state;
@@ -154,15 +171,24 @@ class Add extends React.Component {
 					placeholder="Описание"
 				/>
 				<input
-					type="datetime-local"
-					id="datetime"
+					type="date"
+					id="date"
 					className={
-						(datetimeStatus && 'add__field') ||
-						(!datetimeStatus && 'add__field_error')
+						(dateStatus && 'add__field') || (!dateStatus && 'add__field_error')
 					}
-					value={datetime}
+					value={date}
 					onChange={this.handleChange}
-					placeholder="Дата и время"
+					placeholder="Дата"
+				/>
+				<input
+					type="time"
+					id="time"
+					className={
+						(timeStatus && 'add__field') || (!timeStatus && 'add__field_error')
+					}
+					value={time}
+					onChange={this.handleChange}
+					placeholder="Время"
 				/>
 
 				<div className="add__buttons">
@@ -181,6 +207,8 @@ class Add extends React.Component {
 Add.propTypes = {
 	onClickClose: PropTypes.func.isRequired,
 	onClickAdd: PropTypes.func.isRequired,
+	lastID: PropTypes.number.isRequired,
+	currentID: PropTypes.number.isRequired,
 };
 
 export { Add };

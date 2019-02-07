@@ -48,6 +48,11 @@ export class List extends React.Component {
 		this.openModal();
 	};*/
 
+	handleRemoveClick = event => {
+		const { id } = event.currentTarget;
+		this.props.removeTask(id);
+	};
+
 	renderTemplate = () => {
 		const { tasks } = this.props;
 		let listTemplate = null;
@@ -63,9 +68,13 @@ export class List extends React.Component {
 						<p>Close date:{item.close_date}</p>
 						<p>Close time:{item.close_time}</p>
 						<p>Done:{item.done}</p>
-						<div className="List__task-icon List__task-done" />
-						<div className="List__task-icon List__task-edit" />
-						<div className="List__task-icon List__task-remove" />
+						<div className="List__task-icon List__task-done" id={item.id} />
+						<div className="List__task-icon List__task-edit" id={item.id} />
+						<div
+							className="List__task-icon List__task-remove"
+							onClick={this.handleRemoveClick}
+							id={item.id}
+						/>
 					</div>
 				);
 			});
@@ -105,11 +114,12 @@ export class List extends React.Component {
 }
 List.propTypes = {
 	tasks: PropTypes.array.isRequired,
+	removeTask: PropTypes.func.isRequired,
 	/*
 	modalObjectId: PropTypes.string.isRequired,
 	objectModal: PropTypes.object.isRequired,
 	cadastrString: PropTypes.string.isRequired,
 	objects: PropTypes.array.isRequired,
 	isFetching: PropTypes.bool.isRequired,
-	showDetails: PropTypes.func.isRequired,*/
+	*/
 };

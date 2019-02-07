@@ -5,8 +5,8 @@ import { handleAdd } from '../actions/AddNewActions';
 
 class AddNewContainer extends Component {
 	render() {
-		const { handleAdd } = this.props;
-		return <AddNew handleAdd={handleAdd} />;
+		const { addNew, handleAdd } = this.props;
+		return <AddNew handleAdd={handleAdd} lastID={addNew.lastID} />;
 	}
 }
 

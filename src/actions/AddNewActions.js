@@ -1,5 +1,6 @@
 export const ADD_NEW_TASK = 'ADD_NEW_TASK';
 export const PUT_IN_STORAGE = 'PUT_IN_STORAGE';
+export const UPDATED_ID = 'UPDATED_ID';
 
 export function handleAdd(task) {
 	console.log('Handle add new task:', task);
@@ -9,12 +10,14 @@ export function handleAdd(task) {
 			payload: task,
 		});
 
+		//let lastID = 0;
 		let tasks = localStorage.getItem('tasks');
+		//const storageLastID = localStorage.getItem('lastID');
 		console.log('got from storage', tasks);
 		if (tasks) {
 			tasks = JSON.parse(tasks);
-			const id = task.id;
-			if (id !== undefined) tasks = tasks.filter(item => item.id !== id);
+			/*const id = task.id;
+			if (id !== undefined) tasks = tasks.filter(item => item.id !== id);*/
 		} else {
 			tasks = [];
 		}
@@ -32,6 +35,11 @@ export function handleAdd(task) {
 		dispatch({
 			type: ADD_NEW_TASK,
 			payload: task,
+		});
+
+		dispatch({
+			type: UPDATED_ID,
+			payload: task.id,
 		});
 	};
 }

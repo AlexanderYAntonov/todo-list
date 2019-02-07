@@ -1,85 +1,61 @@
-import { httpGet } from './HeaderInputActions';
-import { LOCAL_URL } from './HeaderInputActions';
+import { UPDATED_ID } from '../actions/AddNewActions';
 
-export const GET_LIST_REQUEST = 'GET_LIST_REQUEST';
-export const GET_LIST_SUCCESS = 'GET_LIST_SUCCESS';
-export const GET_LIST_ERROR = 'GET_LIST_ERROR';
+export const GET_TASKS_SUCCESS = 'GET_TASKS_SUCCESS';
+export const STORAGE_REQUEST = 'STORAGE_REQUEST';
+export const REMOVE_TASK = 'REMOVE_TASK';
 
-export const SHOW_DETAILS_REQUEST = 'SHOW_DETAILS_REQUEST';
-export const SHOW_DETAILS_SUCCESS = 'SHOW_DETAILS_SUCCESS';
-export const SHOW_DETAILS_ERROR = 'SHOW_DETAILS_ERROR';
+export function removeTask(id) {
+	//update storage
+	let tasks = JSON.parse(localStorage.getItem('tasks'));
 
-const FIR_URL = 'https://rosreestr.ru/fir_lite_rest/api/gkn/fir_lite_object/';
-
-//make simple object from response
-const convertJSON = (response, objectType) => {
-	let result = JSON.parse(response).objectData;
-
-	let resultShort = {};
-	resultShort.dateCreated = result.dateCreated;
-	resultShort.name = result.name;
-
-	switch (objectType) {
-		case 'parcel':
-			resultShort.encumbrances = result.parcelData.encumbrancesExists;
-			break;
-		case 'building':
-			resultShort.encumbrances = result.building.encumbrancesExists;
-			break;
-		case 'construction':
-			resultShort.encumbrances = result.construction.encumbrancesExists;
-			break;
-		case 'flat':
-			resultShort.encumbrances = result.flat.encumbrancesExists;
-			break;
-		default:
-			resultShort.encumbrances = false;
+	tasks = tasks.filter(item => item.id !== +id);
+	console.log('tasks, id', tasks, id);
+	try {
+		localStorage.setItem('tasks', JSON.stringify(tasks));
+	} catch (e) {
+		if (e.name === 'QUOTA_EXCEEDED_ERR') {
+			console.log('Превышен лимит LocalStorage');
+		}
 	}
 
-	return resultShort;
-};
-
-//fetch details for modal window
-export function showDetails(objectId, objectType) {
+	//dispatch action
 	return dispatch => {
 		dispatch({
-			type: SHOW_DETAILS_REQUEST,
-			payload: objectId,
+			type: REMOVE_TASK,
+			payload: id,
+		});
+	};
+}
+
+export function getTasksFromStorage() {
+	console.log('Get tasks from storage');
+	return dispatch => {
+		dispatch({
+			type: STORAGE_REQUEST,
 		});
 
-		const url = FIR_URL + objectId;
+		let tasks = JSON.parse(localStorage.getItem('tasks'));
+		let lastID = 0;
 
-		let result = [];
+		//if storage is empty
+		if (!tasks) {
+			tasks = [];
+		} else {
+			tasks.forEach(item => {
+				if (item.id > lastID) {
+					lastID = item.id;
+				}
+			});
+			dispatch({
+				type: UPDATED_ID,
+				payload: lastID,
+			});
+		}
+		console.log('Got tasks', tasks);
 
-		httpGet(url).then(
-			response => {
-				//convert response to array
-				result = convertJSON(response, objectType);
-				dispatch({
-					type: SHOW_DETAILS_SUCCESS,
-					payload: result,
-				});
-			},
-			error => {
-				//if can not fetch cross-domen then fetch local
-				const localURLDetailed = LOCAL_URL + objectType + '.json';
-				httpGet(localURLDetailed).then(
-					response => {
-						//convert response to filtered array
-						result = convertJSON(response, objectType);
-						dispatch({
-							type: SHOW_DETAILS_SUCCESS,
-							payload: result,
-						});
-					},
-					error => {
-						dispatch({
-							type: SHOW_DETAILS_ERROR,
-							payload: error,
-						});
-					}
-				);
-			}
-		);
+		dispatch({
+			type: GET_TASKS_SUCCESS,
+			payload: tasks,
+		});
 	};
 }
