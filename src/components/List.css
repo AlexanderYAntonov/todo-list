@@ -5,6 +5,10 @@
   position:relative;
 }
 
+.List__task-completed {
+  text-decoration: line-through;
+}
+
 .List__task-icon {
   width: 20px;
   height:20px;

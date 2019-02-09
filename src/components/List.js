@@ -53,22 +53,51 @@ export class List extends React.Component {
 		this.props.removeTask(id);
 	};
 
+	handleDoneClick = event => {
+		const { id } = event.currentTarget;
+		this.props.completeTask(id);
+	};
+
+	//check if task is late
+	/*	checkDate(date, time) {
+		const datetime = new Date();
+	}*/
+
 	renderTemplate = () => {
 		const { tasks } = this.props;
 		let listTemplate = null;
 		if (tasks.length) {
 			listTemplate = tasks.map((item, index) => {
 				return (
-					<div key={item.id} className="List__task">
+					<div
+						key={item.id}
+						className={
+							item.done ? 'List__task-completed List__task' : 'List__task'
+						}
+					>
 						<p>ID:{item.id}</p>
 						<p>Title:{item.title}</p>
 						<p>Description:{item.description}</p>
-						<p>Date:{item.date}</p>
-						<p>Time:{item.time}</p>
-						<p>Close date:{item.close_date}</p>
-						<p>Close time:{item.close_time}</p>
-						<p>Done:{item.done}</p>
-						<div className="List__task-icon List__task-done" id={item.id} />
+						{item.date ? (
+							<p>
+								Date & time:{item.date} {item.time}
+							</p>
+						) : (
+							<React.Fragment />
+						)}
+						{item.done ? (
+							<React.Fragment>
+								<p>Close date:{item.close_date}</p>
+								<p>Close time:{item.close_time}</p>
+							</React.Fragment>
+						) : (
+							<React.Fragment />
+						)}
+						<div
+							className="List__task-icon List__task-done"
+							onClick={this.handleDoneClick}
+							id={item.id}
+						/>
 						<div className="List__task-icon List__task-edit" id={item.id} />
 						<div
 							className="List__task-icon List__task-remove"
@@ -115,6 +144,7 @@ export class List extends React.Component {
 List.propTypes = {
 	tasks: PropTypes.array.isRequired,
 	removeTask: PropTypes.func.isRequired,
+	completeTask: PropTypes.func.isRequired,
 	/*
 	modalObjectId: PropTypes.string.isRequired,
 	objectModal: PropTypes.object.isRequired,

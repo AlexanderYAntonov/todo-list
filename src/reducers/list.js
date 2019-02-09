@@ -3,6 +3,7 @@ import {
 	GET_TASKS_SUCCESS,
 	STORAGE_REQUEST,
 	REMOVE_TASK,
+	COMPLETE_TASK,
 } from '../actions/ListActions';
 /*
 tasks: [
@@ -45,6 +46,17 @@ export function listReducer(state = initialState, action) {
 			return {
 				...state,
 				tasks: tasks,
+			};
+		case COMPLETE_TASK:
+			/*tasks = tasks.map(item => {
+				if (item.id === +action.payload) {
+					item.done = true;
+				}
+				return item;
+			});*/
+			return {
+				...state,
+				tasks: action.payload,
 			};
 		/*case GET_LIST_ERROR:
 			return {

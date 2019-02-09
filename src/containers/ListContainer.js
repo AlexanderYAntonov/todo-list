@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List } from '../components/List';
-import { getTasksFromStorage, removeTask } from '../actions/ListActions';
+import {
+	getTasksFromStorage,
+	removeTask,
+	completeTask,
+} from '../actions/ListActions';
 
 class ListContainer extends Component {
 	componentDidMount() {
@@ -9,14 +13,16 @@ class ListContainer extends Component {
 	}
 
 	render() {
-		const { list, removeTask } = this.props;
+		const { list, removeTask, completeTask } = this.props;
 
 		let tasks = list.tasks;
 		if (!tasks) {
 			tasks = [];
 		}
 
-		return <List tasks={tasks} removeTask={removeTask} />;
+		return (
+			<List tasks={tasks} removeTask={removeTask} completeTask={completeTask} />
+		);
 	}
 }
 const mapStateToProps = store => {
@@ -31,6 +37,8 @@ const mapDispatchToProps = dispatch => {
 			dispatch(getTasksFromStorage(objectId, objectType)),
 		removeTask: (objectId, objectType) =>
 			dispatch(removeTask(objectId, objectType)),
+		completeTask: (objectId, objectType) =>
+			dispatch(completeTask(objectId, objectType)),
 	};
 };
 
