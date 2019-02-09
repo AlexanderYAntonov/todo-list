@@ -61,7 +61,7 @@ export function listReducer(state = initialState, action) {
 			let newTask = action.payload;
 			const id = newTask.id;
 			tasks = tasks.filter(item => item.id !== id);
-			tasks.push(newTask);
+			tasks.unshift(newTask);
 			return {
 				...state,
 				tasks: tasks,

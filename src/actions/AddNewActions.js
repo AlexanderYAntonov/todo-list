@@ -28,7 +28,7 @@ export function handleAdd(task) {
 			tasks = [];
 		}
 
-		tasks.push(task);
+		tasks.unshift(task);
 
 		try {
 			localStorage.setItem('tasks', JSON.stringify(tasks));
