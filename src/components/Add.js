@@ -120,9 +120,19 @@ class Add extends React.Component {
 			titleStatus,
 			descriptionStatus,
 		} = this.state;
+		const { currentID } = this.props;
+
+		let strTitle = '';
+
+		if (currentID === 0) {
+			strTitle = 'Добавить задачу';
+		} else {
+			strTitle = 'Изменить задачу';
+		}
+
 		return (
 			<form className="add__form">
-				<span className="add__header">Добавить задачу</span>
+				<span className="add__header">{strTitle}</span>
 
 				<div
 					onChange={event => this.setPriority(event)}

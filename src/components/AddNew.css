@@ -6,7 +6,7 @@
   background-image:url('../images/add.svg');
   filter: drop-shadow(0 0 2px gray);
   transition: transform 500ms ease-in-out;
-  margin: 0 auto;
+  margin: 20px auto 0 auto;
 }
 
 .AddNew-icon:hover {

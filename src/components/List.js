@@ -85,7 +85,8 @@ export class List extends React.Component {
 			>
 				<label
 					className={
-						(priority === 'All' && 'checked_radio') || 'no_checked_radio'
+						(priority === 'All' && 'List-checked_radio') ||
+						'List-no_checked_radio'
 					}
 				>
 					Все
@@ -93,7 +94,8 @@ export class List extends React.Component {
 				</label>
 				<label
 					className={
-						(priority === 'Normal' && 'checked_radio') || 'no_checked_radio'
+						(priority === 'Normal' && 'List-checked_radio') ||
+						'List-no_checked_radio'
 					}
 				>
 					Обычная
@@ -101,7 +103,8 @@ export class List extends React.Component {
 				</label>
 				<label
 					className={
-						(priority === 'Important' && 'checked_radio') || 'no_checked_radio'
+						(priority === 'Important' && 'List-checked_radio') ||
+						'List-no_checked_radio'
 					}
 				>
 					Важная
@@ -110,8 +113,8 @@ export class List extends React.Component {
 
 				<label
 					className={
-						(priority === 'Very important' && 'checked_radio') ||
-						'no_checked_radio'
+						(priority === 'Very important' && 'List-checked_radio') ||
+						'List-no_checked_radio'
 					}
 				>
 					Очень важная
@@ -196,7 +199,6 @@ export class List extends React.Component {
 	};
 
 	render() {
-		//	const { isFetching, objects, objectModal } = this.props;
 		const { isFetching } = this.props;
 
 		return (

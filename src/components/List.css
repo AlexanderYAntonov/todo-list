@@ -1,6 +1,5 @@
 .List__selsAndList {
   width: 90%;
-  max-width: 600px;
   min-width: 200px;
   margin: 0 auto;
   display: flex;
@@ -9,12 +8,13 @@
 }
 
 .List__task {
+  position:relative;
   font-size:12px;
   border:1px solid gray;
-  box-shadow:2px 2px 2px gray;
-  position:relative;
+  box-shadow: 2px 2px 2px #8f8888;
   margin-top: 20px;
   padding: 0 30px;
+  border-radius: 5px;
   display:flex;
   flex-direction: column;
   align-items: flex-start;
@@ -82,25 +82,32 @@
   background-image:url('../images/del.svg');
 }
 
-.checked_radio {
-  font-weight:bold;
-  text-decoration: underline; 
-  margin-right:5px;
-  padding:5px 0;
-}
-
-.no_checked_radio {
-  font-weight:normal;
-  text-decoration: none;
-  margin-right:5px;
-  padding:5px 0;
-}
-
 .List__form-radio {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   font-size: 0.6rem;
+}
+
+.List__form-radio label {
+  padding: 5px;
+}
+
+.List-checked_radio {
+  font-weight:bold;
+  text-decoration: underline; 
+  margin: 0;
+}
+
+.List-no_checked_radio {
+  font-weight:normal;
+  text-decoration: none;
+  margin: 0;
+}
+
+.List__form-radio label:hover {
+  filter:drop-shadow(2px 2px 2px #8f8888);
+  transition: 0.2s ease-in-out;
 }
 
 .List__form-radio:nth-last-child {
@@ -111,3 +118,44 @@
   display:none;
 }
 
+@media only screen and (min-width: 768px) and (max-width: 1000px) and (orientation: portrait) {
+  .List__task {
+    font-size: 18px;
+    padding: 0 40px;
+  }
+
+  .List__form-radio {
+    font-size: 1rem;
+  }
+
+  .List__task-icon {
+    width: 30px;
+    height:30px;
+  }
+
+  .List__task-edit {
+    top: 50px;
+    left: 5px;
+  }
+}
+
+@media only screen and (min-height: 1300px) and (orientation: portrait) {
+  .List__task {
+    font-size: 24px;
+    padding: 0 40px;
+  }
+
+  .List__form-radio {
+    font-size: 1rem;
+  }
+
+  .List__task-icon {
+    width: 30px;
+    height:30px;
+  }
+
+  .List__task-edit {
+    top: 50px;
+    left: 5px;
+  }
+}

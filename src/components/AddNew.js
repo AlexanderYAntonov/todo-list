@@ -39,7 +39,6 @@ export class AddNew extends React.Component {
 
 	//handle button click
 	handleAddNew = task => {
-		//this.closeModal();
 		this.props.handleAdd(task);
 		this.setState({ modalIsOpen: false });
 	};
