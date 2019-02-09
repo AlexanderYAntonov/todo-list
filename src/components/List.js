@@ -142,7 +142,19 @@ export class List extends React.Component {
 	};
 
 	renderTemplate = () => {
-		const { tasks } = this.props;
+		let { tasks } = this.props;
+		const { priority } = this.state;
+		const priorities = {
+			Normal: 'Обычная',
+			Important: 'Важная',
+			'Very important': 'Очень важная',
+		};
+
+		//filter tasks according to priority
+		if (priority !== 'All') {
+			tasks = tasks.filter(item => item.priority === priority);
+		}
+
 		let listTemplate = null;
 		if (tasks.length) {
 			listTemplate = tasks.map((item, index) => {
@@ -156,20 +168,21 @@ export class List extends React.Component {
 
 				return (
 					<div key={item.id} className={classStr}>
-						<p className="List__task-title">Название:{item.title}</p>
-						<p>Описание:{item.description}</p>
+						<p className="List__task-title">Название: {item.title}</p>
+						<p>Описание: {item.description}</p>
+						<p>Важность: {priorities[item.priority]}</p>
 
 						{item.date ? (
 							<p>
-								Срок:{item.date} {item.time}
+								Срок: {item.date} {item.time}
 							</p>
 						) : (
 							<React.Fragment />
 						)}
 						{item.done ? (
 							<React.Fragment>
-								<p>Дата выполнения:{item.close_date}</p>
-								<p>Время выполнения:{item.close_time}</p>
+								<p>Дата выполнения: {item.close_date}</p>
+								<p>Время выполнения: {item.close_time}</p>
 							</React.Fragment>
 						) : (
 							<React.Fragment />
