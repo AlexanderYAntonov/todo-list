@@ -172,11 +172,13 @@ export class List extends React.Component {
 						) : (
 							<React.Fragment />
 						)}
-						<div
-							className="List__task-icon List__task-done"
-							onClick={this.handleDoneClick}
-							id={item.id}
-						/>
+						{!item.done && (
+							<div
+								className="List__task-icon List__task-done"
+								onClick={this.handleDoneClick}
+								id={item.id}
+							/>
+						)}
 						{!item.done && (
 							<div
 								className="List__task-icon List__task-edit"
