@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List } from '../components/List';
+
 import {
 	getTasksFromStorage,
 	removeTask,
 	completeTask,
+	editTask,
 } from '../actions/ListActions';
 
 class ListContainer extends Component {
@@ -13,9 +15,9 @@ class ListContainer extends Component {
 	}
 
 	render() {
-		const { list, removeTask, completeTask } = this.props;
+		const { list, removeTask, completeTask, editTask } = this.props;
 
-		let tasks = list.tasks;
+		let { tasks } = list;
 		if (!tasks) {
 			tasks = [];
 		}
@@ -25,6 +27,7 @@ class ListContainer extends Component {
 				tasks={tasks}
 				removeTask={removeTask}
 				completeTask={completeTask}
+				editTask={editTask}
 				isFetching={list.isFetching}
 			/>
 		);
@@ -44,6 +47,8 @@ const mapDispatchToProps = dispatch => {
 			dispatch(removeTask(objectId, objectType)),
 		completeTask: (objectId, objectType) =>
 			dispatch(completeTask(objectId, objectType)),
+		editTask: (objectId, objectType) =>
+			dispatch(editTask(objectId, objectType)),
 	};
 };
 

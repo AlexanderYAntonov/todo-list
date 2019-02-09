@@ -23,11 +23,9 @@ tasks: [
 const initialState = {
 	tasks: [],
 	isFetching: false,
-	isSaving: false,
 	error: '',
 	modalObjectId: '',
 	objectModal: {},
-	//	lastID: 0,
 };
 
 export function listReducer(state = initialState, action) {
@@ -48,46 +46,21 @@ export function listReducer(state = initialState, action) {
 				tasks: tasks,
 			};
 		case COMPLETE_TASK:
-			/*tasks = tasks.map(item => {
-				if (item.id === +action.payload) {
-					item.done = true;
-				}
-				return item;
-			});*/
 			return {
 				...state,
 				tasks: action.payload,
 			};
-		/*case GET_LIST_ERROR:
-			return {
-				...state,
-				objects: [],
-				isFetching: false,
-				error: action.payload,
-			};
-		case SHOW_DETAILS_REQUEST:
-			return {
-				...state,
-				modalObjectId: action.payload,
-			};
-		case SHOW_DETAILS_SUCCESS:
-			return {
-				...state,
-				objectModal: action.payload,
-			};
-		case SHOW_DETAILS_ERROR:
-			return {
-				...state,
-				error: action.payload,
-			};*/
+
 		case PUT_IN_STORAGE:
 			return {
 				...state,
-				isSaving: true,
+				isEditing: false,
+				currentID: '',
 			};
 		case ADD_NEW_TASK:
 			let newTask = action.payload;
-
+			const id = newTask.id;
+			tasks = tasks.filter(item => item.id !== id);
 			tasks.push(newTask);
 			return {
 				...state,

@@ -20,10 +20,27 @@ class Add extends React.Component {
 	}
 
 	componentDidMount() {
-		/*const currentDatetime = new Date();
-		const currentDate = currentDatetime.toLocaleDateString();
-		const currentTime = currentDatetime.toLocaleTimeString();
-		this.setState({ datetime: currentDate + 'T' + currentTime });*/
+		//if currentID !== 0 (edit task) - fill state with task details
+		const id = this.props.currentID;
+
+		if (id !== 0) {
+			let tasks = JSON.parse(localStorage.getItem('tasks'));
+			if (!tasks) {
+				return false;
+			}
+			tasks = tasks.filter(item => item.id === id);
+			if (tasks.length) {
+				const { title, description, priority, date, time } = tasks[0];
+				this.setState({
+					title: title,
+					description: description,
+					date: date,
+					time: time,
+					id: id,
+					priority: priority,
+				});
+			}
+		}
 	}
 
 	addData = () => {
@@ -71,15 +88,6 @@ class Add extends React.Component {
 			id = currentID;
 		}
 		//now call action
-		console.log(
-			'id, Tile, desc, date,time, priority = ',
-			id,
-			title,
-			description,
-			date,
-			time,
-			priority
-		);
 		this.props.onClickAdd({
 			title: title,
 			description: description,
@@ -92,7 +100,6 @@ class Add extends React.Component {
 
 	handleChange = event => {
 		const { id, value } = event.currentTarget;
-
 		this.setState({ [id]: value });
 	};
 

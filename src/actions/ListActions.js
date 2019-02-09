@@ -4,6 +4,28 @@ export const GET_TASKS_SUCCESS = 'GET_TASKS_SUCCESS';
 export const STORAGE_REQUEST = 'STORAGE_REQUEST';
 export const REMOVE_TASK = 'REMOVE_TASK';
 export const COMPLETE_TASK = 'COMPLETE_TASK';
+export const EDIT_TASK = 'EDIT_TASK';
+
+export function editTask(id) {
+	//dispatch action
+	return dispatch => {
+		dispatch({
+			type: EDIT_TASK,
+			payload: id,
+		});
+	};
+}
+
+//set tasks in storage
+const setTasks = tasks => {
+	try {
+		localStorage.setItem('tasks', JSON.stringify(tasks));
+	} catch (e) {
+		if (e.name === 'QUOTA_EXCEEDED_ERR') {
+			console.log('Превышен лимит LocalStorage');
+		}
+	}
+};
 
 export function completeTask(id) {
 	//update storage
@@ -23,33 +45,16 @@ export function completeTask(id) {
 	}
 	const year = datetime.getFullYear();
 
-	console.log(
-		'Server started at ' +
-			values[0] +
-			'.' +
-			values[1] +
-			'.' +
-			datetime.getFullYear()
-	);
-
 	tasks = tasks.map(item => {
 		if (item.id === +id) {
 			item.done = true;
 			item.close_date = year + '-' + values[1] + '-' + values[2];
 			item.close_time = values[2] + '-' + values[3];
-			console.log(item.close_date, item.close_time);
 		}
 		return item;
 	});
 
-	//DRY
-	try {
-		localStorage.setItem('tasks', JSON.stringify(tasks));
-	} catch (e) {
-		if (e.name === 'QUOTA_EXCEEDED_ERR') {
-			console.log('Превышен лимит LocalStorage');
-		}
-	}
+	setTasks(tasks);
 
 	//dispatch action
 	return dispatch => {
@@ -66,13 +71,7 @@ export function removeTask(id) {
 
 	tasks = tasks.filter(item => item.id !== +id);
 
-	try {
-		localStorage.setItem('tasks', JSON.stringify(tasks));
-	} catch (e) {
-		if (e.name === 'QUOTA_EXCEEDED_ERR') {
-			console.log('Превышен лимит LocalStorage');
-		}
-	}
+	setTasks(tasks);
 
 	//dispatch action
 	return dispatch => {
@@ -84,7 +83,6 @@ export function removeTask(id) {
 }
 
 export function getTasksFromStorage() {
-	console.log('Get tasks from storage');
 	return dispatch => {
 		dispatch({
 			type: STORAGE_REQUEST,
@@ -107,7 +105,6 @@ export function getTasksFromStorage() {
 				payload: lastID,
 			});
 		}
-		console.log('Got tasks', tasks);
 
 		dispatch({
 			type: GET_TASKS_SUCCESS,

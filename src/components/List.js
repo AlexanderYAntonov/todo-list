@@ -3,40 +3,15 @@ import PropTypes from 'prop-types';
 
 import '../App.css';
 import './List.css';
-import Modal from 'react-modal';
-
-const customStyles = {
-	content: {
-		top: '50%',
-		left: '50%',
-		right: 'auto',
-		bottom: 'auto',
-		marginRight: '-50%',
-		transform: 'translate(-50%, -50%)',
-		padding: '10px',
-	},
-	overlay: {
-		backgroundColor: 'rgba(0,0,0,0.7)',
-	},
-};
 
 export class List extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			modalIsOpen: false,
 			priority: 'All',
 		};
 	}
-
-	openModal = () => {
-		this.setState({ modalIsOpen: true });
-	};
-
-	closeModal = () => {
-		this.setState({ modalIsOpen: false });
-	};
 
 	handleRemoveClick = event => {
 		const { id } = event.currentTarget;
@@ -46,6 +21,11 @@ export class List extends React.Component {
 	handleDoneClick = event => {
 		const { id } = event.currentTarget;
 		this.props.completeTask(id);
+	};
+
+	handleEditClick = event => {
+		const { id } = event.currentTarget;
+		this.props.editTask(id);
 	};
 
 	//check if task is late
@@ -169,7 +149,9 @@ export class List extends React.Component {
 				return (
 					<div key={item.id} className={classStr}>
 						<p className="List__task-title">Название: {item.title}</p>
-						<p>Описание: {item.description}</p>
+						<p className="List__task-description">
+							Описание: {item.description}
+						</p>
 						<p>Важность: {priorities[item.priority]}</p>
 
 						{item.date ? (
@@ -192,7 +174,13 @@ export class List extends React.Component {
 							onClick={this.handleDoneClick}
 							id={item.id}
 						/>
-						<div className="List__task-icon List__task-edit" id={item.id} />
+						{!item.done && (
+							<div
+								className="List__task-icon List__task-edit"
+								onClick={this.handleEditClick}
+								id={item.id}
+							/>
+						)}
 						<div
 							className="List__task-icon List__task-remove"
 							onClick={this.handleRemoveClick}
@@ -209,7 +197,6 @@ export class List extends React.Component {
 
 	render() {
 		//	const { isFetching, objects, objectModal } = this.props;
-		const { modalIsOpen } = this.state;
 		const { isFetching } = this.props;
 
 		return (
@@ -219,15 +206,6 @@ export class List extends React.Component {
 				<div className="list">
 					{isFetching ? <p>Загружаем ...</p> : this.renderTemplate()}
 				</div>
-
-				<Modal
-					isOpen={modalIsOpen}
-					ariaHideApp={false}
-					style={customStyles}
-					onRequestClose={this.closeModal}
-				>
-					<p>Modal text</p>
-				</Modal>
 			</div>
 		);
 	}
@@ -236,5 +214,6 @@ List.propTypes = {
 	tasks: PropTypes.array.isRequired,
 	removeTask: PropTypes.func.isRequired,
 	completeTask: PropTypes.func.isRequired,
+	editTask: PropTypes.func.isRequired,
 	isFetching: PropTypes.bool.isRequired,
 };

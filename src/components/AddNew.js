@@ -33,24 +33,26 @@ export class AddNew extends React.Component {
 	};
 
 	closeModal = () => {
+		this.props.cancelEditing();
 		this.setState({ modalIsOpen: false });
 	};
 
 	//handle button click
 	handleAddNew = task => {
-		this.closeModal();
+		//this.closeModal();
 		this.props.handleAdd(task);
+		this.setState({ modalIsOpen: false });
 	};
 
 	render() {
 		const { modalIsOpen } = this.state;
-		const { lastID } = this.props;
+		const { lastID, currentID, isEditing } = this.props;
 
 		return (
 			<React.Fragment>
 				<div className="AddNew-icon" onClick={this.openModal} />
 				<Modal
-					isOpen={modalIsOpen}
+					isOpen={modalIsOpen || isEditing}
 					ariaHideApp={false}
 					style={customStyles}
 					onRequestClose={this.closeModal}
@@ -59,7 +61,7 @@ export class AddNew extends React.Component {
 						onClickClose={this.closeModal}
 						onClickAdd={this.handleAddNew}
 						lastID={lastID}
-						currentID={0}
+						currentID={currentID}
 					/>
 				</Modal>
 			</React.Fragment>
@@ -69,5 +71,8 @@ export class AddNew extends React.Component {
 
 AddNew.propTypes = {
 	handleAdd: PropTypes.func.isRequired,
+	cancelEditing: PropTypes.func.isRequired,
 	lastID: PropTypes.number.isRequired,
+	currentID: PropTypes.number.isRequired,
+	isEditing: PropTypes.bool.isRequired,
 };
