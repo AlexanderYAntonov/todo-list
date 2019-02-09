@@ -1,8 +1,23 @@
+.List__selsAndList {
+  width: 90%;
+  max-width: 600px;
+  min-width: 200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .List__task {
   font-size:12px;
   border:1px solid gray;
   box-shadow:2px 2px 2px gray;
   position:relative;
+  margin-top: 20px;
+}
+
+.List__task-title {
+  font-weight: bold;
 }
 
 .List__task-completed {
@@ -29,19 +44,48 @@
 
 .List__task-done {
   top: 5px;
-  right: 5px;
+  left: 5px;
   background-image:url('../images/done.svg');
 }
 
 .List__task-edit {
   top: 30px;
-  right: 5px;
+  left: 5px;
   background-image:url('../images/edit.svg');
 }
 
 .List__task-remove {
-  top: 55px;
+  top: 5px;
   right: 5px;
   background-image:url('../images/del.svg');
+}
+
+.checked_radio {
+  font-weight:bold;
+  text-decoration: underline; 
+  margin-right:5px;
+  padding:5px 0;
+}
+
+.no_checked_radio {
+  font-weight:normal;
+  text-decoration: none;
+  margin-right:5px;
+  padding:5px 0;
+}
+
+.List__form-radio {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 0.6rem;
+}
+
+.List__form-radio:nth-last-child {
+  margin-right: 0;
+}
+
+.List__form-radio input[type="radio"] {
+  display:none;
 }
 

@@ -26,6 +26,7 @@ export class List extends React.Component {
 
 		this.state = {
 			modalIsOpen: false,
+			priority: 'All',
 		};
 	}
 
@@ -36,17 +37,6 @@ export class List extends React.Component {
 	closeModal = () => {
 		this.setState({ modalIsOpen: false });
 	};
-	/*
-	handleSpanClick = e => {
-		e.preventDefault();
-
-		const itemID = e.currentTarget.id.split('&');
-		const objectId = itemID[0];
-		const objectType = itemID[1];
-
-		this.props.showDetails(objectId, objectType);
-		this.openModal();
-	};*/
 
 	handleRemoveClick = event => {
 		const { id } = event.currentTarget;
@@ -100,6 +90,57 @@ export class List extends React.Component {
 		}
 	}
 
+	setPriority = event => {
+		const { value } = event.target;
+		this.setState({ priority: value });
+	};
+
+	renderSelectors = () => {
+		const { priority } = this.state;
+
+		return (
+			<div
+				onChange={event => this.setPriority(event)}
+				className="List__form-radio"
+			>
+				<label
+					className={
+						(priority === 'All' && 'checked_radio') || 'no_checked_radio'
+					}
+				>
+					Все
+					<input type="radio" name="priority" value="All" defaultChecked />
+				</label>
+				<label
+					className={
+						(priority === 'Normal' && 'checked_radio') || 'no_checked_radio'
+					}
+				>
+					Обычная
+					<input type="radio" name="priority" value="Normal" />
+				</label>
+				<label
+					className={
+						(priority === 'Important' && 'checked_radio') || 'no_checked_radio'
+					}
+				>
+					Важная
+					<input type="radio" name="priority" value="Important" />
+				</label>
+
+				<label
+					className={
+						(priority === 'Very important' && 'checked_radio') ||
+						'no_checked_radio'
+					}
+				>
+					Очень важная
+					<input type="radio" name="priority" value="Very important" />
+				</label>
+			</div>
+		);
+	};
+
 	renderTemplate = () => {
 		const { tasks } = this.props;
 		let listTemplate = null;
@@ -115,7 +156,7 @@ export class List extends React.Component {
 
 				return (
 					<div key={item.id} className={classStr}>
-						<p>Название:{item.title}</p>
+						<p className="List__task-title">Название:{item.title}</p>
 						<p>Описание:{item.description}</p>
 
 						{item.date ? (
@@ -159,7 +200,9 @@ export class List extends React.Component {
 		const { isFetching } = this.props;
 
 		return (
-			<React.Fragment>
+			<div className="List__selsAndList">
+				{this.renderSelectors()}
+
 				<div className="list">
 					{isFetching ? <p>Загружаем ...</p> : this.renderTemplate()}
 				</div>
@@ -172,7 +215,7 @@ export class List extends React.Component {
 				>
 					<p>Modal text</p>
 				</Modal>
-			</React.Fragment>
+			</div>
 		);
 	}
 }

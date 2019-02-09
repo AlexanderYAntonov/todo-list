@@ -98,7 +98,6 @@ class Add extends React.Component {
 
 	setPriority = event => {
 		const { value } = event.target;
-		console.log('Set priority to', value, event.target.value);
 		this.setState({ priority: value });
 	};
 
