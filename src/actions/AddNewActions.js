@@ -13,7 +13,7 @@ export function handleAdd(task) {
 		//let lastID = 0;
 		let tasks = localStorage.getItem('tasks');
 		//const storageLastID = localStorage.getItem('lastID');
-		console.log('got from storage', tasks);
+
 		if (tasks) {
 			tasks = JSON.parse(tasks);
 			/*const id = task.id;
@@ -21,9 +21,9 @@ export function handleAdd(task) {
 		} else {
 			tasks = [];
 		}
-		console.log('Tasks and task', tasks, task);
+
 		tasks.push(task);
-		console.log('put in storage', JSON.stringify(tasks));
+
 		try {
 			localStorage.setItem('tasks', JSON.stringify(tasks));
 		} catch (e) {

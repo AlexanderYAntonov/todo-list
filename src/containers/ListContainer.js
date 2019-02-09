@@ -21,7 +21,12 @@ class ListContainer extends Component {
 		}
 
 		return (
-			<List tasks={tasks} removeTask={removeTask} completeTask={completeTask} />
+			<List
+				tasks={tasks}
+				removeTask={removeTask}
+				completeTask={completeTask}
+				isFetching={list.isFetching}
+			/>
 		);
 	}
 }

@@ -59,36 +59,76 @@ export class List extends React.Component {
 	};
 
 	//check if task is late
-	/*	checkDate(date, time) {
+	checkDateIsLate(date, time) {
+		if (!date) {
+			return false;
+		}
+		if (time === '') {
+			time = '23-59';
+		}
+
 		const datetime = new Date();
-	}*/
+		let values = [
+			datetime.getDate(),
+			datetime.getMonth() + 1,
+			datetime.getHours(),
+			datetime.getMinutes(),
+		];
+		for (let id in values) {
+			values[id] = values[id].toString().replace(/^([0-9])$/, '0$1');
+		}
+
+		//get str for compare
+		const str =
+			datetime.getFullYear() +
+			'.' +
+			values[1] +
+			'.' +
+			values[0] +
+			'.' +
+			values[2] +
+			'.' +
+			values[3];
+
+		//format task date & time for compare
+		const strTask = date.split('-').join('.') + '.' + time.split('-').join('.');
+
+		if (strTask < str) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	renderTemplate = () => {
 		const { tasks } = this.props;
 		let listTemplate = null;
 		if (tasks.length) {
 			listTemplate = tasks.map((item, index) => {
+				let classStr = 'List__task';
+				if (item.done) {
+					classStr += ' List__task-completed';
+				}
+				if (this.checkDateIsLate(item.date, item.time) && !item.done) {
+					classStr += ' List__task-late';
+				}
+
 				return (
-					<div
-						key={item.id}
-						className={
-							item.done ? 'List__task-completed List__task' : 'List__task'
-						}
-					>
-						<p>ID:{item.id}</p>
-						<p>Title:{item.title}</p>
-						<p>Description:{item.description}</p>
+					<div key={item.id} className={classStr}>
+						<p>Название:{item.title}</p>
+						<p>Описание:{item.description}</p>
+
 						{item.date ? (
 							<p>
-								Date & time:{item.date} {item.time}
+								Срок:{item.date} {item.time}
 							</p>
 						) : (
 							<React.Fragment />
 						)}
 						{item.done ? (
 							<React.Fragment>
-								<p>Close date:{item.close_date}</p>
-								<p>Close time:{item.close_time}</p>
+								<p>Дата выполнения:{item.close_date}</p>
+								<p>Время выполнения:{item.close_time}</p>
 							</React.Fragment>
 						) : (
 							<React.Fragment />
@@ -108,7 +148,7 @@ export class List extends React.Component {
 				);
 			});
 		} else {
-			listTemplate = <p>Here will be some tasks</p>;
+			listTemplate = <p>Пока задач нет</p>;
 		}
 		return listTemplate;
 	};
@@ -116,15 +156,12 @@ export class List extends React.Component {
 	render() {
 		//	const { isFetching, objects, objectModal } = this.props;
 		const { modalIsOpen } = this.state;
+		const { isFetching } = this.props;
 
-		//if (objects.length) {
 		return (
 			<React.Fragment>
 				<div className="list">
-					{/*
-						{isFetching ? (	<p>Загружаем ...</p>) : ({this.renderTemplate()})	}
-					*/}
-					{this.renderTemplate()}
+					{isFetching ? <p>Загружаем ...</p> : this.renderTemplate()}
 				</div>
 
 				<Modal
@@ -137,19 +174,11 @@ export class List extends React.Component {
 				</Modal>
 			</React.Fragment>
 		);
-		/*}
-		return <p>Нет данных для отображения</p>;*/
 	}
 }
 List.propTypes = {
 	tasks: PropTypes.array.isRequired,
 	removeTask: PropTypes.func.isRequired,
 	completeTask: PropTypes.func.isRequired,
-	/*
-	modalObjectId: PropTypes.string.isRequired,
-	objectModal: PropTypes.object.isRequired,
-	cadastrString: PropTypes.string.isRequired,
-	objects: PropTypes.array.isRequired,
 	isFetching: PropTypes.bool.isRequired,
-	*/
 };

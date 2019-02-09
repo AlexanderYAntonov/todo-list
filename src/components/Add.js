@@ -51,6 +51,18 @@ class Add extends React.Component {
 
 		if (error > 0) return false;
 
+		//if there is only time - set date to today
+		if (time && !date) {
+			const datetime = new Date();
+			let values = [datetime.getMonth() + 1, datetime.getDate()];
+			for (let id in values) {
+				values[id] = values[id].toString().replace(/^([0-9])$/, '0$1');
+			}
+
+			//get formatted date
+			date = datetime.getFullYear() + '-' + values[0] + '-' + values[1];
+		}
+
 		let id = 0;
 
 		if (currentID === 0) {
@@ -78,19 +90,10 @@ class Add extends React.Component {
 		});
 	};
 
-	/*validate = (event) => {
-        let {imageTitle, imageURL} = this.state;
-        imageTitle = imageTitle.trim();
-        imageURL = imageURL.trim();
-        
-        return imageTitle && imageURL;
-    }*/
-
 	handleChange = event => {
 		const { id, value } = event.currentTarget;
 
 		this.setState({ [id]: value });
-		//console.log(this.state);
 	};
 
 	setPriority = event => {

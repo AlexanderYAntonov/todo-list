@@ -9,6 +9,10 @@
   text-decoration: line-through;
 }
 
+.List__task-late {
+  background: #e06767;
+}
+
 .List__task-icon {
   width: 20px;
   height:20px;
